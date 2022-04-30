@@ -25,6 +25,5 @@
         justify-content: center;
         flex-wrap: nowrap;
         gap: 83px;
-        margin-top: 4%;
     }
 </style>
