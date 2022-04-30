@@ -1,5 +1,5 @@
 <script>
-    import UseResult from '../components/userResult.svelte'
+    import UseResult from '../components/useResult.svelte'
 
     export let price;
 </script>
