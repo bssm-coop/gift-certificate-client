@@ -43,7 +43,7 @@
     .issue--price-submit {
         color: white;
         margin-top: 3%;
-        width: 80%;
+        width: 83%;
         height: 9%;
         font-weight: 500;
         font-size: 1.5em;

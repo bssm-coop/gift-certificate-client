@@ -12,6 +12,7 @@
 <style>
     header {
         text-align: center;
+        margin-top: 3%;
         margin-bottom: 2%;
     }
     img {
