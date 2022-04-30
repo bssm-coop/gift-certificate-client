@@ -1,10 +1,14 @@
 <script>
+    import { link } from 'svelte-spa-router'
+
     export let title;
     export let smallTitle;
 </script>
 
 <header>
-    <img src="images/logo.png" alt="logo">
+    <a use:link href="/">
+        <img src="images/logo.png" alt="logo">
+    </a>
     <span class="yellow header--title">{ title }</span>
     <span class="header--small-title">{ smallTitle }</span>
 </header>

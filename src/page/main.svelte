@@ -10,11 +10,13 @@
 <section class="main--button-list">
     <MainButton
             title = "발권"
-            description="매점 상품권을 발권할 수 있습니다."
+            description = "매점 상품권을 발권할 수 있습니다."
+            linkTo = "/issue"
     />
     <MainButton
             title = "사용"
-            description="매점 상품권을 사용할 수 있습니다."
+            description = "매점 상품권을 사용할 수 있습니다."
+            linkTo = "/use"
     />
 </section>
 

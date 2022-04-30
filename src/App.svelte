@@ -1,7 +1,8 @@
 <script>
-    import Main from './page/main.svelte'
-    import Issue from './page/issue.svelte'
-    import Use from './page/use.svelte'
-    import UseFailed from './page/useFailed.svelte'
-    import UseSuccess from './page/useSuccess.svelte'
+    import Router from 'svelte-spa-router'
+    import routes from './router'
 </script>
+
+<Router { routes } />
+
+

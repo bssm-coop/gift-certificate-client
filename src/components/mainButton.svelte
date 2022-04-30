@@ -1,8 +1,12 @@
 <script>
+    import { link } from 'svelte-spa-router'
+
     export let title;
-    export let description
+    export let description;
+    export let linkTo;
 </script>
 
+<a use:link href="{linkTo}">
 <div class="main--button">
     <div>
     <h1>
@@ -12,6 +16,7 @@
     <p>{ description }</p>
     </div>
 </div>
+</a>
 
 <style>
     .main--button {
@@ -38,5 +43,4 @@
         font-size: 24px;
         line-height: 28px;
     }
-
 </style>
