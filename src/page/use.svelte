@@ -1,7 +1,23 @@
 <script>
     import Header from '../components/header.svelte'
+    import axios from 'axios'
+    import { BASE_URL } from '../api/urls';
 
     let qr = '';
+
+    function useIt() {
+        axios({
+            method: 'PUT',
+            url: BASE_URL + 'gift-certificate',
+            data: {
+                'code': { qr }
+            }
+        }).then(res => {
+            console.log(res);
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 </script>
 
 <Header
@@ -12,7 +28,7 @@
     <input class="qr" type="password" bind:value="{ qr }">
 
     {#if qr.length === 163 }
-        <button>
+        <button on:click={() => useIt()}>
             <img src="images/next.png" alt="next">
         </button>
     {:else}
