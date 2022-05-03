@@ -1,23 +1,11 @@
 <script>
     import Header from '../components/header.svelte'
+    import { link } from 'svelte-spa-router'
     import axios from 'axios'
     import { BASE_URL } from '../api/urls';
 
     let qr = '';
 
-    function useIt() {
-        axios({
-            method: 'PUT',
-            url: BASE_URL + 'gift-certificate',
-            data: {
-                'code': { qr }
-            }
-        }).then(res => {
-            console.log(res);
-        }).catch(error => {
-            console.log(error);
-        });
-    }
 </script>
 
 <Header
@@ -27,10 +15,11 @@
 <section class="container">
     <input class="qr" type="password" bind:value="{ qr }">
 
-    {#if qr.length === 163 }
-        <button on:click={() => useIt()}>
+    {#if qr.length > 90 }
+<!--        <button on:click={() => useIt()}>-->
+        <a use:link href="/use/check?qr={ qr }">
             <img src="images/next.png" alt="next">
-        </button>
+        </a>
     {:else}
         <p>
             <span class="yellow">QR 코드</span>를 스캔해 주세요.
@@ -42,7 +31,7 @@
     .qr {
         margin-top: 7%;
         font-size: 100px;
-        width: 80%;
+        width: 88%;
         height: 124px;
         background: #FFFFFF;
         border: 6px solid rgba(245, 196, 70, 0.15);
@@ -56,12 +45,12 @@
         font-weight: normal;
         font-size: 64px;
     }
-    button {
+    a {
         border: 0;
         outline: 0;
         background-color: white;
     }
-    button:active > img {
+    a:active > img {
         background-color: white;
         position: relative;
         top:2px;

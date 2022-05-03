@@ -1,6 +1,7 @@
 <script>
     import Header from '../components/header.svelte'
     import PriceButton from '../components/priceButton.svelte'
+    import LongButton from '../components/longButton.svelte'
 </script>
 
 <Header
@@ -22,7 +23,11 @@
             price=5000
         />
     </div>
-    <button class="issue--price-submit">확인</button>
+    <LongButton
+        title="확인"
+        color="white"
+        backgroundColor="#F5C446"
+    />
 </section>
 
 
@@ -39,25 +44,6 @@
         display: flex;
         justify-content: space-evenly;
         flex-wrap: wrap;
-    }
-    .issue--price-submit {
-        color: white;
-        margin-top: 3%;
-        width: 83%;
-        height: 9%;
-        font-weight: 500;
-        font-size: 1.5em;
-        background: #F5C446;
-        box-shadow: 0px 4px 15px -2px rgba(0, 0, 0, 0.25);
-        border-radius: 40px;
-    }
-    .issue--price-submit:focus {
-        border: none;
-    }
-    .issue--price-submit:active {
-        background-color: #F5C446;
-        box-shadow: 0px 4px 15px -2px rgba(0, 0, 0, 0.5);
-        position: relative;
-        top:2px;
+        margin-bottom: 2%;
     }
 </style>
