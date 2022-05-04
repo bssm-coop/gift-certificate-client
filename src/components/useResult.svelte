@@ -1,24 +1,16 @@
 <script>
-    import Header from './header.svelte'
-
     export let result;
     export let mainText;
     export let text;
 </script>
 
-<Header
-    title="사용"
-    smallTitle="하기"
-/>
-<section class="container">
-    <img src="images/{result}.png" alt="{result}">
-    <div class="text">
-        <p class="yellow">
-            { mainText }
-        </p>
-        <p>{ text }</p>
-    </div>
-</section>
+<img src="images/{result}.png" alt="{result}">
+<div class="text">
+    <p class="yellow">
+        { mainText }
+    </p>
+    <p>{ text }</p>
+</div>
 
 <style>
     img {
