@@ -2,7 +2,7 @@
     import Header from '../components/header.svelte'
     import { link } from 'svelte-spa-router'
 
-    let qr = '';
+    let studentNumber = '';
 
 </script>
 
@@ -11,22 +11,22 @@
         smallTitle="하기"
 />
 <section class="container">
-    <input class="qr" type="password" bind:value="{ qr }">
+    <input class="studentNumber" type="text" bind:value="{ studentNumber }">
 
-    {#if qr.length > 90 }
-<!--        <button on:click={() => useIt()}>-->
-        <a use:link href="/use/check?qr={ qr }">
+    {#if studentNumber.length === 4 }
+<!--        <a use:link href="/use/check?qr={ qr }">-->
             <img src="images/next.png" alt="next">
-        </a>
+<!--        </a>-->
     {:else}
         <p>
-            <span class="yellow">QR 코드</span>를 스캔해 주세요.
+            <span class="yellow">사용자 본인의 학번</span>을<br>
+            입력해 주세요.
         </p>
     {/if}
 </section>
 
 <style>
-    .qr {
+    .studentNumber {
         margin-top: 7%;
         font-size: 100px;
         width: 88%;
@@ -35,6 +35,7 @@
         border: 6px solid rgba(245, 196, 70, 0.15);
         box-shadow: 0px 10px 0px -2px #F5C446;
         border-radius: 62px;
+        text-align: center;
     }
     input:focus {
         outline: none;
