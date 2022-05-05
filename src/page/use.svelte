@@ -44,6 +44,19 @@ $: state = 0;
         })
     }
 
+    function getUser() {
+        const getUserUrl = BASE_URL + 'gift-certificate/already?qr=' + qr;
+        return new Promise(async (resolve, reject) => {
+            try {
+                const res = await axios.get(getUserUrl);
+                resolve(res.data);
+            } catch (err) {
+                reject(err.response.data);
+            } finally {
+            }
+        })
+    }
+
 </script>
 
 <Header
@@ -123,6 +136,12 @@ $: state = 0;
                     mainText="이미 사용된"
                     text="상품권입니다"
             />
+            {#await getUser()}
+
+            {:then res}
+                <p class="already--text">사용 시각: { res.usedDateTime }</p>
+                <p class="already--text">사용자 학번: { res.studentNumber }</p>
+            {/await}
         {/await}
     {/if}
 </section>
@@ -171,5 +190,9 @@ $: state = 0;
     .amount--buttons {
         height: 100%;
         margin-top: 8%;
+    }
+    .already--text {
+        margin: 0;
+        color: #BFBFBF;
     }
 </style>
