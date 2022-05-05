@@ -1,16 +1,16 @@
 <script>
     import Header from '../components/header.svelte'
     import LongButton from '../components/longButton.svelte'
-    import UseResult from '../components/useResult.svelte'
+    import UseResult from '../components/result.svelte'
     import { link } from 'svelte-spa-router'
     import { BASE_URL } from "../api/urls";
     import axios from "axios";
 
 $: state = 0;
 
-    function changeStatus() {
+    function changeState() {
         state = state + 1;
-        console.log('changestatus: ' + state)
+        console.log('changeState: ' + state)
     }
 
     let qr = '';
@@ -55,7 +55,7 @@ $: state = 0;
         <input class="qr" type="password" bind:value="{ qr }">
 
         {#if qr.length > 90 }
-            <button on:click={() => changeStatus()}>
+            <button on:click={() => changeState()}>
                 <img src="images/next.png" alt="next">
             </button>
         {:else}
@@ -74,7 +74,7 @@ $: state = 0;
             </p>
 
             <div class="amount--buttons">
-                <a on:click={() => changeStatus()}>
+                <a on:click={() => changeState()}>
                     <LongButton
                             title="확인"
                             color="white"
@@ -98,7 +98,7 @@ $: state = 0;
         <input class="studentNumber" type="text" bind:value="{ studentNumber }">
 
         {#if studentNumber.length === 4 }
-            <button on:click={() => changeStatus()}>
+            <button on:click={() => changeState()}>
                 <img src="images/next.png" alt="next">
             </button>
         {:else}
