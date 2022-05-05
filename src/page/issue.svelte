@@ -1,7 +1,42 @@
 <script>
-    import Header from '../components/header.svelte'
-    import PriceButton from '../components/priceButton.svelte'
+    import Header from '../components/header.svelte';
     import LongButton from '../components/longButton.svelte'
+    import IssueResult from '../components/result.svelte'
+    import { BASE_URL } from "../api/urls";
+    import axios from "axios";
+
+$: state = 0;
+
+    function changeState() {
+        state = state + 1;
+        console.log('changeState: ' + state)
+    }
+
+    let price;
+    let number = 0;
+    let numbers = [100, 50, 10, 5, 1];
+
+    function addValue(n) {
+        number = number + n;
+    }
+
+    function createThem() {
+        const createUrl = BASE_URL + 'gift-certificate';
+        return new Promise(async (resolve, reject) => {
+            try {
+                const res = await axios.post(createUrl, {
+                    'amount': price,
+                    'number': number
+                });
+                resolve(res);
+            } catch (err) {
+                reject(err.response.data);
+            } finally {
+
+            }
+        })
+    }
+
 </script>
 
 <Header
@@ -9,30 +44,77 @@
     smallTitle="하기"
 />
 <section class="container">
-    <p class="issue--price-title">
-        발권할 상품의 <span class="yellow">금액</span>을 입력해 주세요.
-    </p>
-    <div class="issue--price">
-        <PriceButton
-            price=1000
-        />
-        <PriceButton
-            price=3000
-        />
-        <PriceButton
-            price=5000
-        />
-    </div>
-    <LongButton
-        title="확인"
-        color="white"
-        backgroundColor="#F5C446"
-    />
+    {#if state === 0}
+        <p class="issue--title">
+            발권할 상품의 <span class="yellow">금액</span>을 입력해 주세요.
+        </p>
+        <div class="issue--price">
+            <label class="price--label">
+                <input type="radio" bind:group={ price } name="price" value={1000}>
+                <span class="price--text">{ 1000 }</span>
+            </label>
+            <label class="price--label">
+                <input type="radio" bind:group={ price } name="price" value={3000}>
+                <span class="price--text">{ 3000 }</span>
+            </label>
+            <label class="price--label">
+                <input type="radio" bind:group={ price } name="price" value={5000}>
+                <span class="price--text">{ 5000 }</span>
+            </label>
+        </div>
+
+        <a on:click={() => changeState()}>
+            <LongButton
+                title="확인"
+                color="white"
+                backgroundColor="#F5C446"
+            />
+        </a>
+    {/if}
+    {#if state === 1}
+        <p class="issue--title">
+            발권할 상품권의 <span class="yellow">개수</span>를 입력해 주세요.
+        </p>
+        <input class="number--input" type="number" bind:value={ number } />
+
+        <div class="plus">
+            {#each numbers as n}
+                <button class="plus--button" on:click={() => addValue(n)}>
+                    + { n }
+                </button>
+            {/each}
+        </div>
+
+        <a on:click={() => changeState()}>
+            <LongButton
+                    title="확인"
+                    color="white"
+                    backgroundColor="#F5C446"
+            />
+        </a>
+    {/if}
+    {#if state === 2}
+        {#await createThem()}
+
+        {:then res}
+            <IssueResult
+                result="O"
+                mainText="{ price } 원권 { number } 개"
+                text="발권되었습니다"
+            />
+        {:catch err}
+            <IssueResult
+                result="X"
+                mainText="{ err.status }"
+                text="{ err.message }"
+            />
+        {/await}
+    {/if}
 </section>
 
 
 <style>
-    p {
+    .issue--title {
         margin-left: 8%;
         margin-bottom: 5%;
         font-weight: normal;
@@ -45,5 +127,72 @@
         justify-content: space-evenly;
         flex-wrap: wrap;
         margin-bottom: 2%;
+    }
+    .price--label {
+        width: 240px;
+        height: 240px;
+    }
+    .price--text {
+        font-weight: 700;
+        font-size: 3.3em;
+        line-height: 75px;
+        color: #F5C446;
+    }
+    .price--label input[type="radio"] {
+        display: none;
+    }
+    .price--label input[type="radio"] + span {
+        display: inline-block;
+        padding: 27% 17%;
+        border: 2px solid #F5C446;
+        box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.25);
+        border-radius: 40px;
+        background-color: #ffffff;
+        text-align: center;
+        cursor: pointer;
+    }
+    .price--label input[type="radio"]:checked + span {
+        background-color: #FEF6E3;
+    }
+    .number--input {
+        width: 100%;
+        height: 200px;
+        font-weight: 700;
+        font-size: 220px;
+        line-height: 258px;
+        color: #F5C446;
+        text-align: center;
+        margin: 0 0 3% 0;
+        padding: 0;
+        border: none;
+    }
+    input[type="number"]::-webkit-inner-spin-button {
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+    }
+    input[type="number"]:focus {
+        outline: none;
+    }
+    .plus {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 22px;
+        justify-content: center;
+    }
+    .plus--button {
+        font-weight: 300;
+        font-size: 24px;
+        line-height: 28px;
+        width: 110px;
+        height: 45px;
+        border: 1px solid #F5C446;
+        border-radius: 16px;
+        background: #FFFFFF;
+        margin: 0 0 2% 0;
+    }
+    .plus--button:active {
+        position: relative;
+        top: 2px;
     }
 </style>

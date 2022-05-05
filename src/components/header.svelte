@@ -20,7 +20,6 @@
         margin-bottom: 2%;
     }
     img {
-        margin-top: 3%;
         margin-right: 15px;
     }
     .header--title {
