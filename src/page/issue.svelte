@@ -15,6 +15,7 @@ $: state = 0;
     let price;
     let number = 0;
     let numbers = [100, 50, 10, 5, 1];
+    let prices = [500, 1000, 3000, 5000];
 
     function addValue(n) {
         number = number + n;
@@ -49,18 +50,12 @@ $: state = 0;
             발권할 상품의 <span class="yellow">금액</span>을 입력해 주세요.
         </p>
         <div class="issue--price">
-            <label class="price--label">
-                <input type="radio" bind:group={ price } name="price" value={1000}>
-                <span class="price--text">{ 1000 }</span>
-            </label>
-            <label class="price--label">
-                <input type="radio" bind:group={ price } name="price" value={3000}>
-                <span class="price--text">{ 3000 }</span>
-            </label>
-            <label class="price--label">
-                <input type="radio" bind:group={ price } name="price" value={5000}>
-                <span class="price--text">{ 5000 }</span>
-            </label>
+            {#each prices as p}
+                <label class="price--label">
+                    <input type="radio" bind:group={ price } name="price" value="{ p }">
+                    <span class="price--text">{ p }</span>
+                </label>
+            {/each}
         </div>
 
         <a on:click={() => changeState()}>
