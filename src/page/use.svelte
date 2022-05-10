@@ -79,7 +79,7 @@ $: state = 0;
     {/if}
     {#if state === 1}
         {#await getAmount()}
-
+            <p>loading...</p>
         {:then res}
             <p class="amount--text">
                 <span class="yellow">{ res.amount } 원</span><br>
@@ -123,7 +123,7 @@ $: state = 0;
     {/if}
     {#if state === 3}
         {#await useIt()}
-
+            <p>loading...</p>
         {:then res}
             <UseResult
                     result="O"
@@ -137,7 +137,7 @@ $: state = 0;
                     text="상품권입니다"
             />
             {#await getUser()}
-
+                <p>loading...</p>
             {:then res}
                 <p class="already--text">사용 시각: { res.usedDateTime }</p>
                 <p class="already--text">사용자 학번: { res.studentNumber }</p>

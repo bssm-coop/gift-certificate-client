@@ -13,6 +13,7 @@ $: state = 0;
     }
 
     let price;
+    let issuer;
     let number = 0;
     let numbers = [100, 50, 10, 5, 1];
     let prices = [500, 1000, 3000, 5000];
@@ -27,6 +28,7 @@ $: state = 0;
             try {
                 const res = await axios.post(createUrl, {
                     'amount': price,
+                    'issuer': issuer,
                     'number': number
                 });
                 resolve(res);
@@ -89,8 +91,22 @@ $: state = 0;
         </a>
     {/if}
     {#if state === 2}
-        {#await createThem()}
+        <p class="issue--title">
+            상품권을 발권하는 <span class="yellow">발권 요청자</span>를 입력해 주세요.
+        </p>
+        <input class="issuer--input" type="text" bind:value={ issuer } />
 
+        <a on:click={() => changeState()}>
+            <LongButton
+                    title="확인"
+                    color="white"
+                    backgroundColor="#F5C446"
+            />
+        </a>
+    {/if}
+    {#if state === 3}
+        {#await createThem()}
+            <p>loading...</p>
         {:then res}
             <IssueResult
                 result="O"
@@ -149,6 +165,16 @@ $: state = 0;
     .price--label input[type="radio"]:checked + span {
         background-color: #FEF6E3;
     }
+    .issuer--input {
+        border: 0;
+        border-bottom: 6px solid #F5C446;
+        width: 80%;
+        font-weight: 700;
+        font-size: 64px;
+        line-height: 75px;
+        text-align: center;
+        margin-bottom: 12%;
+    }
     .number--input {
         width: 100%;
         height: 200px;
@@ -166,7 +192,7 @@ $: state = 0;
         -moz-appearance: none;
         -webkit-appearance: none;
     }
-    input[type="number"]:focus {
+    input:focus {
         outline: none;
     }
     .plus {
