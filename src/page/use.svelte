@@ -103,8 +103,11 @@ $: state = 0;
                 </a>
             </div>
         {:catch err}
-            <!-- rejected(거부) -->
-            <p style="color: red;">{err.message}</p>
+            <UseResult
+                    result="X"
+                    mainText="이미 사용된"
+                    text="상품권입니다"
+            />
         {/await}
     {/if}
     {#if state === 2}
@@ -133,8 +136,8 @@ $: state = 0;
         {:catch err}
             <UseResult
                     result="X"
-                    mainText="이미 사용된"
-                    text="상품권입니다"
+                    mainText="잘못"
+                    text="학번입니다"
             />
             {#await getUser()}
                 <p>loading...</p>
