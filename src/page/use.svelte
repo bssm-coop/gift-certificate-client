@@ -2,6 +2,7 @@
     import Header from '../components/header.svelte'
     import LongButton from '../components/longButton.svelte'
     import UseResult from '../components/result.svelte'
+    import Modal from "../Modal.svelte";
     import { link } from 'svelte-spa-router'
     import { BASE_URL } from "../api/urls";
     import axios from "axios";
@@ -10,14 +11,16 @@ $: state = 0;
 
     function changeState() {
         state = state + 1;
-        console.log('changeState: ' + state)
     }
 
-    let qr = '';
+$: qr = '';
+$: if (qr.length > 90) {
+    setTimeout(addQr, 1000);
+}
     let studentNumber = '';
 
     function getAmount() {
-        const amountUrl = BASE_URL + 'gift-certificate/amount?qr=' + qr;
+        const amountUrl = BASE_URL + 'gift-certificate/amount?qrs=' + qrs;
         return new Promise(async (resolve, reject) => {
             try {
                 const res = await axios.get(amountUrl);
@@ -32,10 +35,13 @@ $: state = 0;
     }
 
     function useIt() {
-        const useUrl = BASE_URL + 'gift-certificate?qr=' + qr + '&student=' + studentNumber;
+        const useUrl = BASE_URL + 'gift-certificate';
         return new Promise(async (resolve, reject) => {
             try {
-                const res = await axios.put(useUrl);
+                const res = await axios.put(useUrl, {
+                    'codes': qrs,
+                    'studentNumber': studentNumber,
+                });
                 resolve(res.data);
             } catch (err) {
                 reject(err.response.data);
@@ -57,8 +63,50 @@ $: state = 0;
         })
     }
 
+    let showModal = false;
+    let qrs = [];
+    let alreadyUser = {
+        studentNumber: '',
+        usedDateTime: '',
+    }
+    let mainMessage = '';
+    let subMessage = '';
+
+    function addQr() {
+        const getIsUsedValidationUrl = BASE_URL + 'gift-certificate/validate?qr=' + qr;
+
+        axios.get(getIsUsedValidationUrl).then(res => {
+            qrs.push(qr);
+            console.log(qrs);
+            qr = '';
+        }).catch(err => {
+            getUser().then(res => {
+                alreadyUser.studentNumber = res.studentNumber;
+                alreadyUser.usedDateTime = res.usedDateTime;
+                mainMessage = "이미 사용된 상품권입니다."
+                subMessage = `사용자: ${alreadyUser.studentNumber} | 사용시각: ${alreadyUser.usedDateTime}`
+                toggleModal();
+                qr = '';
+            }).catch(err => {
+                mainMessage = err.message;
+                subMessage = '';
+                toggleModal();
+                qr = '';
+            })
+        })
+    }
+
+    const toggleModal = () => {
+        showModal = !showModal;
+    };
 </script>
 
+<Modal
+        mainMessage="{mainMessage}"
+        subMessage="{subMessage}"
+        {showModal}
+        on:click={toggleModal}
+/>
 <Header
         title="사용"
         smallTitle="하기"
@@ -67,15 +115,9 @@ $: state = 0;
     {#if state === 0}
         <input class="qr" type="password" bind:value="{ qr }">
 
-        {#if qr.length > 90 }
-            <button on:click={() => changeState()}>
-                <img src="images/next.png" alt="next">
-            </button>
-        {:else}
-            <p class="qr--text">
-                <span class="yellow">QR 코드</span>를 스캔해 주세요.
-            </p>
-        {/if}
+        <button on:click={() => changeState()}>
+            <img src="images/next.png" alt="next">
+        </button>
     {/if}
     {#if state === 1}
         {#await getAmount()}
@@ -136,15 +178,9 @@ $: state = 0;
         {:catch err}
             <UseResult
                     result="X"
-                    mainText="잘못"
+                    mainText="잘못된"
                     text="학번입니다"
             />
-            {#await getUser()}
-                <p>loading...</p>
-            {:then res}
-                <p class="already--text">사용 시각: { res.usedDateTime }</p>
-                <p class="already--text">사용자 학번: { res.studentNumber }</p>
-            {/await}
         {/await}
     {/if}
 </section>
@@ -164,7 +200,7 @@ $: state = 0;
     input:focus {
         outline: none;
     }
-    .qr--text, .studentNumber--text {
+    .studentNumber--text {
         font-weight: normal;
         font-size: 64px;
     }
@@ -193,9 +229,5 @@ $: state = 0;
     .amount--buttons {
         height: 100%;
         margin-top: 8%;
-    }
-    .already--text {
-        margin: 0;
-        color: #BFBFBF;
     }
 </style>
