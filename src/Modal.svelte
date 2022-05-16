@@ -6,7 +6,7 @@
 {#if showModal}
     <div class="backdrop" on:click|self>
         <div class="modal">
-            <img src="./images/X.png">
+            <img src="./images/X.png" alt="X">
             <p class="message--main">{mainMessage}</p>
             <p class="message--sub">{subMessage}</p>
         </div>
