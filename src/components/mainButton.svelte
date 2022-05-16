@@ -21,7 +21,7 @@
 <style>
     .main--button {
         display: flex;
-        width: 465px;
+        width: 400px;
         height: 70%;
         box-shadow: 0px 4px 30px 2px rgba(0, 0, 0, 0.25);
         border-radius: 40px;
