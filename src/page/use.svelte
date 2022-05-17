@@ -79,6 +79,13 @@ $: qr = '';
         const getIsUsedValidationUrl = BASE_URL + 'gift-certificate/validate?qr=' + qr;
 
         axios.get(getIsUsedValidationUrl).then(res => {
+            if (qrs.includes(qr)) {
+                mainMessage = "이미 입력한 상품권입니다.";
+                subMessage = "그렇습니다.";
+                toggleModal();
+                qr='';
+                return;
+            }
             qrs.push(qr);
             qr = '';
             addNumber();
@@ -217,7 +224,7 @@ $: qr = '';
         outline: 0;
         background-color: white;
     }
-    a:active > img, button:active > img {
+    button:active > img {
         background-color: white;
         position: relative;
         top:2px;
