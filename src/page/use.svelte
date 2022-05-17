@@ -8,14 +8,19 @@
     import axios from "axios";
 
 $: state = 0;
+    let number = 0;
 
     function changeState() {
         state = state + 1;
     }
 
+    function addNumber() {
+        number = number + 1;
+    }
+
 $: qr = '';
 $: if (qr.length > 90) {
-    setTimeout(addQr, 1000);
+    setTimeout(addQr, 3000);
 }
     let studentNumber = '';
 
@@ -77,8 +82,8 @@ $: if (qr.length > 90) {
 
         axios.get(getIsUsedValidationUrl).then(res => {
             qrs.push(qr);
-            console.log(qrs);
             qr = '';
+            addNumber();
         }).catch(err => {
             getUser().then(res => {
                 alreadyUser.studentNumber = res.studentNumber;
@@ -113,11 +118,12 @@ $: if (qr.length > 90) {
 />
 <section class="container">
     {#if state === 0}
+        <p class="number--text">{number} 개 입력되었습니다.</p>
         <input class="qr" type="password" bind:value="{ qr }">
-
         <button on:click={() => changeState()}>
             <img src="images/next.png" alt="next">
         </button>
+
     {/if}
     {#if state === 1}
         {#await getAmount()}
@@ -187,7 +193,7 @@ $: if (qr.length > 90) {
 
 <style>
     .qr, .studentNumber {
-        margin-top: 7%;
+        margin-top: 2%;
         font-size: 100px;
         width: 88%;
         height: 124px;
@@ -196,6 +202,10 @@ $: if (qr.length > 90) {
         box-shadow: 0 10px 0 -2px #F5C446;
         border-radius: 62px;
         text-align: center;
+    }
+    .number--text {
+        color: #999999;
+        margin: 0;
     }
     input:focus {
         outline: none;
