@@ -19,9 +19,7 @@ $: state = 0;
     }
 
 $: qr = '';
-$: if (qr.length > 90) {
-    setTimeout(addQr, 3000);
-}
+
     let studentNumber = '';
 
     function getAmount() {
@@ -77,7 +75,7 @@ $: if (qr.length > 90) {
     let mainMessage = '';
     let subMessage = '';
 
-    function addQr() {
+    function addQr(event) {
         const getIsUsedValidationUrl = BASE_URL + 'gift-certificate/validate?qr=' + qr;
 
         axios.get(getIsUsedValidationUrl).then(res => {
@@ -119,7 +117,7 @@ $: if (qr.length > 90) {
 <section class="container">
     {#if state === 0}
         <p class="number--text">{number} 개 입력되었습니다.</p>
-        <input class="qr" type="password" bind:value="{ qr }">
+        <input class="qr" type="password" bind:value="{ qr }" on:keyup={e => e.key === 'Enter' && addQr()}>
         <button on:click={() => changeState()}>
             <img src="images/next.png" alt="next">
         </button>
