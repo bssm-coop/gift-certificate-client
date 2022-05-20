@@ -131,7 +131,7 @@ $: qr = '';
 <section class="container">
     {#if state === 0}
         <p class="number--text">{number} 개 입력되었습니다.</p>
-        <input class="qr" type="password" bind:value="{ qr }" on:keyup={e => e.key === 'Enter' && addQr()}>
+        <input class="qr" type="password" bind:value="{ qr }" on:keyup={e => e.key === 'Enter' && addQr()} autofocus>
         <button on:click={() => changeState()}>
             <img src="images/next.png" alt="next">
         </button>
