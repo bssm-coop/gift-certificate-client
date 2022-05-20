@@ -149,9 +149,5 @@ $: qr = '';
         position: relative;
         top:2px;
     }
-    .amount--text > .yellow {
-        font-weight: 700;
-        font-size: 128px;
-    }
 
 </style>

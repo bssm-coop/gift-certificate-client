@@ -109,6 +109,13 @@ $: qr = '';
     const toggleModal = () => {
         showModal = !showModal;
     };
+
+    function reset() {
+        state = 0;
+        number = 0;
+        qrs = [];
+        studentNumber = '';
+    }
 </script>
 
 <Modal
@@ -181,17 +188,21 @@ $: qr = '';
         {#await useIt()}
             <p>loading...</p>
         {:then res}
+            <button on:click={() => reset()}>
             <UseResult
                     result="O"
                     mainText="{ res.amount } 원"
                     text="사용되었습니다"
             />
+            </button>
         {:catch err}
+            <button on:click={() => reset()}>
             <UseResult
                     result="X"
                     mainText="잘못된"
                     text="학번입니다"
             />
+            </button>
         {/await}
     {/if}
 </section>
