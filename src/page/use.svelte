@@ -6,8 +6,9 @@
     import { link } from 'svelte-spa-router'
     import { BASE_URL } from "../api/urls";
     import axios from "axios";
+    import { autofocus } from "../util/autofocus";
 
-$: state = 0;
+    $: state = 0;
     let number = 0;
 
     function changeState() {
@@ -131,7 +132,7 @@ $: qr = '';
 <section class="container">
     {#if state === 0}
         <p class="number--text">{number} 개 입력되었습니다.</p>
-        <input class="qr" type="password" bind:value="{ qr }" on:keyup={e => e.key === 'Enter' && addQr()} autofocus>
+        <input class="qr" type="password" bind:value="{ qr }" on:keyup={e => e.key === 'Enter' && addQr()} use:autofocus>
         <button on:click={() => changeState()}>
             <img src="images/next.png" alt="next">
         </button>
